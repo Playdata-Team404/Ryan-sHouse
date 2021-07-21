@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TEAM-404 STOCK VISUAL</title>
+    <link rel="stylesheet" href="{{url_for('static' , filename='css/popup.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <link rel="stylesheet" href="../static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../static/css/fullcalendar.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/tooplate.css">
+    <script src="{{url_for('static', filename='js/stock.js')}}"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['line'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart(stock) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Date');
+            data.addColumn('number', '5일 이동평균선');
+            data.addColumn('number', '10일 이동평균선');
+
+            for (key in stock) {
+                data.addRow(
+                    [stock[key].index, stock[key].ma10, stock[key].ma5]
+                )
+            }
+
+            coin_name = document.getElementById("coin_name").value
+            var options = {
+                legend: { position: 'none' },
+                chart: {
+                    title: coin_name
+                },
+                width: 550,
+                height: 300
+            };
+
+            var chart = new google.charts.Line(document.getElementById('linechart_material'));
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <link rel="stylesheet" href="../static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../static/css/fullcalendar.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/tooplate.css">
+</head>
+
+<body id="reportsPage">
+    <div class="" id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="navbar navbar-expand-xl navbar-light bg-light">
+                        <a class="navbar-brand" href="#">
+                            <i class="fas fa-3x fa-tachometer-alt tm-site-icon"></i>
+                            <h1 class="tm-site-title mb-0">TEAM-404 <br>STOCK VISUAL</h1>
+                        </a>
+                        <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mx-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" onclick="get_stock()">STOCK UPDATE
+                                        <!-- <span class="sr-only">(current)</span> -->
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" onclick="get_news()">NEWS UPDATE
+                                        <!-- <span class="sr-only">(current)</span> -->
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <select name="stock_name" class="nav-link dropdown-toggle" href="#" id="stock_name"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        GRAPH
+                                        <!-- </a> -->
+                                        <!-- <select name="stock_name" id="stock_name" class="dropdown-menu" aria-labelledby="navbarDropdown"> -->
+                                        <!-- <a class="dropdown-item" href="#">Daily Report</a>
+                                        <a class="dropdown-item" href="#">Weekly Report</a>
+                                        <a class="dropdown-item" href="#">Yearly Report</a> -->
+                                        <!-- <select name="stock_name" id="stock_name"> -->
+                                        <option>종목선택</option>
+                                        <option class="dropdown-item" value="삼성전자">삼성전자</option>
+                                        <option class="dropdown-item" value="SK하이닉스">SK하이닉스</option>
+                                        <option class="dropdown-item" value="NAVER">NAVER</option>
+                                        <option class="dropdown-item" value="카카오">카카오</option>
+                                        <option class="dropdown-item" value="삼성전자우">삼성전자우</option>
+                                        <option class="dropdown-item" value="삼성바이오로직스">삼성바이오로직스</option>
+                                        <option class="dropdown-item" value="LG화학">LG화학</option>
+                                        <option class="dropdown-item" value="삼성SDI">삼성SDI</option>
+                                        <option class="dropdown-item" value="현대차">현대차</option>
+                                        <option class="dropdown-item" value="셀트리온">셀트리온</option>
+                                    </select>
+
+                                    <!-- </div> -->
+                                </li>
+                                <li>
+                                    <button onclick="stockchart()">STOCK CHARTS</button><br>
+                                    <button onclick="wordcloud()">NEWS KEYWORD</button>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" href="accounts.html">Accounts</a>
+                                </li> -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        STOCK SITE
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="https://stock.naver.com/sise/"
+                                            target="_blank">네이버 주식</a>
+                                        <a class="dropdown-item" href="https://finance.daum.net/" target="_blank">카카오
+                                            주식</a>
+                                        <a class="dropdown-item" href="https://kr.investing.com/equities/south-korea"
+                                            target="_blank">한국 주식 시장</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                     </p>
+                                </li>
+                                <li class="popup" style="float: right;">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="modal_btn"><img src="./static/img/button.png"
+                                            width=50></a>
+                                </li>
+                                <!-- <button type='button' id="modal_btn">떡상하는 주식 보러가기</button> -->
+                                <div class="black_bg"></div>
+                                <div class="modal_wrap">
+                                    <div class="modal_close"><a href="#">close</a></div>
+                                    <div>
+                                        <p
+                                            style="text-align: center; font-size: 30px; padding-left: 20px; color: rgb(207, 23, 23);">
+                                            <b> ▽ ▽ ▽ 오늘의 추천종목 ▽ ▽ ▽</b>
+                                        </p>
+                                        <hr>
+                                        <div id="letters"
+                                            style="text-align: center; font-size: 20px; font-weight: bold;"></div>
+                                        <div id="logo" style="text-align: center; size: 90%;"></div><br>
+                                        <div id="buy" style="text-align: center; font-size: 15px; font-weight: bold;">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- <a class="nav-link active" href="#" onclick="get_stock()">팝업! -->
+                                <!-- <span class="sr-only">(current)</span> -->
+                                </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- row -->
+            <div class="row tm-content-row tm-mt-big">
+                <div class="tm-col tm-col-big">
+                    <div class="bg-white tm-block h-100">
+                        <h2 class="tm-block-title">Candle Chart</h2>
+                        <div id="chart_view"></div>
+                        <!-- <canvas id="chart_view"></canvas> -->
+                    </div>
+                </div>
+                <div class="tm-col tm-col-big">
+                    <div class="bg-white tm-block h-100">
+                        <h2 class="tm-block-title">News WordCloud</h2>
+                        <div id="cloud_view"></div>
+                    </div>
+                </div>
+                <div class="tm-col tm-col-small">
+                    <div class="bg-white tm-block h-100">
+                        <h2 class="tm-block-title">TOP10 주식 보러가기</h2>
+                        <ol class="tm-list-group">
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/005930/total"
+                                    target="_blank">삼성전자</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/000660/total"
+                                    target="_blank">SK하이닉스</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/035420/total"
+                                    target="_blank">NAVER</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/035720/total"
+                                    target="_blank">카카오</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/005935/total"
+                                    target="_blank">삼성전자우</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/207940/total"
+                                    target="_blank">삼성바이오로직스</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/051910/total"
+                                    target="_blank">LG화학</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/006400/total"
+                                    target="_blank">삼성SDI</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/005380/total"
+                                    target="_blank">현대차</a></li>
+                            <li class="tm-list-group-item"><a
+                                    href="https://m.stock.naver.com/index.html#/domestic/stock/068270/total"
+                                    target="_blank">셀트리온</a></li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="tm-col tm-col-big">
+                    <div class="bg-white tm-block h-100">
+                        <div class="row">
+                            <div class="col-8">
+                                <h2 class="tm-block-title d-inline-block">Bitcoin</h2>
+                            </div>
+                        </div>
+                        <div>
+                            <select name="coin_name" id="coin_name">
+                                <option value="KRW-BTC">비트코인</option>
+                                <option value="KRW-ETC">이더리움</option>
+                                <option value="KRW-XRP">리플</option>
+                                <option value="KRW-DOGE">도지코인</option>
+                                <option value="KRW-ETC">이더리움클래식</option>
+                                <option value="KRW-AXS">엑시인피니티</option>
+                                <option value="KRW-XEM">넴</option>
+                                <option value="KRW-MFT">메인프레임</option>
+                                <option value="KRW-CRE">캐리프로토콜</option>
+                                <option value="KRW-SAND">샌드박스</option>
+                                <option value="KRW-TT">썬더토큰</option>
+                                <option value="KRW-MLK">밀크</option>
+                                <option value="KRW-AHT">아하토큰</option>
+                                <option value="KRW-REP">어거</option>
+                                <option value="KRW-EOS">이오스</option>
+                                <option value="KRW-ADA">에이다</option>
+                                <option value="KRW-DOT">폴카닷</option>
+                                <option value="KRW-FLOW">플로우</option>
+                                <option value="KRW-UPP">센티넬프로토콜</option>
+                                <option value="KRW-VET">비체인</option>
+                                <option value="KRW-GLM">골렘</option>
+                                <option value="KRW-TRX">트론</option>
+                                <option value="KRW-MED">메디블록</option>
+                                <option value="KRW-BTG">비트코인골드</option>
+                                <option value="KRW-AQT">알파쿼크</option>
+                            </select>
+                            <select name="day" id="day">
+                                <option value="10">10일</option>
+                                <option value="30">1달</option>
+                                <option value="90">3달</option>
+                                <option value="180">6달</option>
+                                <option value="365">1년</option>
+                                <option value="730">2년</option>
+                                <option value="1100">3년</option>
+                            </select>
+                            <button onclick="upbit()">시세 조회</button>
+                            <button onclick="upbit_graph()">이동평균선</button>
+                            <br>
+                            <hr>
+                            <div id='upbit'></div>
+                            <div id='upbit2' style="display: none;"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tm-col tm-col-big">
+                    <div class="bg-white tm-block h-100">
+                        <h2 class="tm-block-title">이동평균선</h2>
+                        <div div id="linechart_material" style="width: 500px; height: 300px">
+                        </div>
+                    </div>
+                </div>
+                <div class="tm-col tm-col-small">
+                    <div class="bg-white tm-block h-100">
+                        <h4>GITHUB 놀러가기</h4>
+                        <a href="https://github.com/purple-cabbage0030" target="_blank"><img src="./static/img/좌니.png"
+                                width=40%></a>
+                        <a href="https://github.com/johnny9210" target="_blank"><img src="./static/img/홍주.png"
+                                width=40%></a><br>
+                        <a href="https://github.com/Henry-choi426" target="_blank"><img src="./static/img/헨리.png"
+                                width=40%></a>
+                        <a href="https://github.com/Hyunsoo-Ryan-Lee" target="_blank"><img src="./static/img/현수.png"
+                                width=40%></a>
+                    </div>
+                </div>
+            </div>
+            <footer class="row tm-mt-small">
+                <div class="col-12 font-weight-light">
+                    <p class="d-inline-block tm-bg-black text-white py-2 px-4">
+
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="../static/js/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="../static/js/utils.js"></script>
+    <script src="../static/js/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="../static/js/fullcalendar.min.js"></script>
+    <!-- https://fullcalendar.io/ -->
+    <script src="../static/js/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="../static/js/tooplate-scripts.js"></script>
+</body>
+
+</html>
